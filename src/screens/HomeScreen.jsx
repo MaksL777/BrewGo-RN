@@ -1,0 +1,323 @@
+import React, { useState, useEffect, useMemo } from 'react';
+import {
+  StyleSheet,
+  SafeAreaView,
+  View,
+  FlatList,
+  Text,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
+import { Feather } from '@expo/vector-icons';
+
+import Header from '../components/Header';
+import SearchBar from '../components/SearchBar';
+import CategoryList from '../components/CategoryList';
+import ProductCard from '../components/ProductCard';
+import CustomButton from '../components/CustomButton';
+
+import { PRODUCTS, YOUR_USUAL } from '../data/products';
+import { COLORS } from '../constants/colors';
+import { SPACING, RADIUS, FONT_SIZE } from '../constants/layout';
+import { SCREENS } from '../navigation/screens';
+
+const CATEGORIES = ['All', 'Coffee', 'Tea', 'Cold Brew', 'Pastry'];
+
+/**
+ * HomeScreen
+ *
+ * Primary tab of MainTabNavigator matching the BrewGo Figma design:
+ * - Header with drawer menu button (☰) and profile avatar (👤)
+ * - Search bar with real-time product filtering
+ * - "Your usual" card with a working "Reorder" button navigating straight to Checkout
+ * - Category filter chips ("Coffee", "Tea", "Cold Brew", "Pastry")
+ * - "Popular near you" horizontal cards with card press (details) and "+" press
+ * - Order confirmation banner when returning from Checkout
+ */
+export default function HomeScreen({ navigation, route }) {
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [search, setSearch] = useState('');
+
+  // Read orderConfirmed param passed back from CheckoutScreen
+  const orderConfirmed = route.params?.orderConfirmed;
+  const orderTitle = route.params?.orderTitle;
+
+  useEffect(() => {
+    if (orderConfirmed) {
+      const timer = setTimeout(() => {
+        navigation.setParams({ orderConfirmed: undefined, orderTitle: undefined });
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [orderConfirmed, navigation]);
+
+  // Filter products by selected category and search query
+  const filteredProducts = useMemo(() => {
+    return PRODUCTS.filter((item) => {
+      const matchesCategory =
+        selectedCategory === 'All' || item.category === selectedCategory;
+      const matchesSearch =
+        !search ||
+        item.name.toLowerCase().includes(search.toLowerCase()) ||
+        item.description.toLowerCase().includes(search.toLowerCase());
+      return matchesCategory && matchesSearch;
+    });
+  }, [selectedCategory, search]);
+
+  const handleReorderUsual = () => {
+    navigation.navigate(SCREENS.CHECKOUT, {
+      productId: YOUR_USUAL.productId,
+      quantity: 1,
+      size: YOUR_USUAL.size,
+      milk: YOUR_USUAL.milk,
+      extraShots: YOUR_USUAL.extraShots,
+      sugar: YOUR_USUAL.sugar,
+    });
+  };
+
+  const renderHeader = () => (
+    <View>
+      {/* Search Input */}
+      <View style={styles.section}>
+        <SearchBar
+          value={search}
+          onChangeText={setSearch}
+          placeholder="Search drinks or shops..."
+        />
+      </View>
+
+      {/* "Your usual" Card matching Figma */}
+      {!search && selectedCategory === 'All' && (
+        <View style={styles.section}>
+          <View style={styles.usualCard}>
+            <View style={styles.usualThumb}>
+              <Text style={styles.usualCoffeeGlyph}>☕</Text>
+            </View>
+            <View style={styles.usualInfo}>
+              <Text style={styles.usualLabel}>Your usual</Text>
+              <Text style={styles.usualName}>{YOUR_USUAL.name}</Text>
+              <Text style={styles.usualDate}>{YOUR_USUAL.description}</Text>
+            </View>
+            <TouchableOpacity
+              style={styles.reorderButton}
+              onPress={handleReorderUsual}
+              activeOpacity={0.8}
+              accessibilityLabel="Reorder your usual drink"
+            >
+              <Text style={styles.reorderText}>Reorder</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+
+      {/* Categories chips */}
+      <View style={styles.sectionTitleRow}>
+        <Text style={styles.sectionTitle}>Categories</Text>
+      </View>
+      <View style={styles.sectionNoPadding}>
+        <CategoryList
+          categories={CATEGORIES}
+          selectedCategory={selectedCategory}
+          onSelectCategory={setSelectedCategory}
+        />
+      </View>
+
+      {/* Section Title for Products */}
+      <View style={styles.sectionTitleRow}>
+        <Text style={styles.sectionTitle}>
+          {search ? `Search results (${filteredProducts.length})` : 'Popular near you'}
+        </Text>
+      </View>
+    </View>
+  );
+
+  return (
+    <SafeAreaView style={styles.safeArea}>
+      <Header
+        title="Good morning, Alex"
+        subtitle="Riverside Roasters · 0.3 mi"
+        onMenuPress={() => navigation.openDrawer()}
+        onProfilePress={() => navigation.navigate(SCREENS.PROFILE)}
+      />
+
+      {orderConfirmed ? (
+        <TouchableOpacity
+          style={styles.banner}
+          onPress={() => navigation.navigate(SCREENS.ORDERS)}
+          activeOpacity={0.9}
+        >
+          <Feather name="check-circle" size={18} color={COLORS.brownDark} style={{ marginRight: 8 }} />
+          <Text style={styles.bannerText}>
+            Order confirmed! {orderTitle ? `(${orderTitle})` : ''} Tap to view status ☕
+          </Text>
+        </TouchableOpacity>
+      ) : null}
+
+      <FlatList
+        data={filteredProducts}
+        keyExtractor={(item) => item.id}
+        ListHeaderComponent={renderHeader}
+        contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}
+        renderItem={({ item }) => (
+          <ProductCard
+            name={item.name}
+            price={item.price}
+            description={item.description}
+            rating={item.rating}
+            variant="horizontal"
+            onPress={() =>
+              navigation.navigate(SCREENS.PRODUCT_DETAILS, { productId: item.id })
+            }
+            onAddPress={() =>
+              navigation.navigate(SCREENS.CHECKOUT, {
+                productId: item.id,
+                quantity: 1,
+              })
+            }
+          />
+        )}
+        ListEmptyComponent={
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyTitle}>No drinks found</Text>
+            <Text style={styles.emptySubtitle}>
+              Try searching with another keyword or pick "All" categories.
+            </Text>
+            <CustomButton
+              title="Reset filters"
+              variant="outline"
+              onPress={() => {
+                setSearch('');
+                setSelectedCategory('All');
+              }}
+              style={styles.resetButton}
+            />
+          </View>
+        }
+      />
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: COLORS.background,
+  },
+  listContent: {
+    paddingHorizontal: SPACING.lg,
+    paddingBottom: SPACING.xl,
+  },
+  section: {
+    marginBottom: SPACING.md,
+  },
+  sectionNoPadding: {
+    marginBottom: SPACING.md,
+    marginHorizontal: -SPACING.lg,
+  },
+  sectionTitleRow: {
+    marginBottom: SPACING.sm,
+    marginTop: SPACING.xs,
+  },
+  sectionTitle: {
+    fontSize: FONT_SIZE.lg,
+    fontWeight: '700',
+    color: COLORS.ink,
+  },
+  banner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: SPACING.lg,
+    marginBottom: SPACING.sm,
+    backgroundColor: COLORS.cardAlt,
+    borderRadius: RADIUS.md,
+    paddingVertical: SPACING.sm,
+    paddingHorizontal: SPACING.md,
+    borderWidth: 1,
+    borderColor: COLORS.caramel,
+  },
+  bannerText: {
+    color: COLORS.brownDark,
+    fontWeight: '700',
+    fontSize: FONT_SIZE.xs,
+  },
+  usualCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.cardAlt,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.md,
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.black,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.06,
+        shadowRadius: 4,
+      },
+      android: { elevation: 1 },
+    }),
+  },
+  usualThumb: {
+    width: 56,
+    height: 56,
+    borderRadius: RADIUS.md,
+    backgroundColor: COLORS.caramel,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: SPACING.md,
+  },
+  usualCoffeeGlyph: {
+    fontSize: 26,
+  },
+  usualInfo: {
+    flex: 1,
+  },
+  usualLabel: {
+    fontSize: FONT_SIZE.xs,
+    fontWeight: '700',
+    color: COLORS.brownDark,
+  },
+  usualName: {
+    fontSize: FONT_SIZE.sm,
+    fontWeight: '700',
+    color: COLORS.ink,
+    marginTop: 2,
+  },
+  usualDate: {
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.muted,
+    marginTop: 2,
+  },
+  reorderButton: {
+    backgroundColor: COLORS.brownDark,
+    borderRadius: RADIUS.pill,
+    paddingVertical: SPACING.sm,
+    paddingHorizontal: SPACING.lg,
+  },
+  reorderText: {
+    color: COLORS.white,
+    fontWeight: '700',
+    fontSize: FONT_SIZE.sm,
+  },
+  emptyContainer: {
+    alignItems: 'center',
+    paddingVertical: SPACING.xl,
+  },
+  emptyTitle: {
+    fontSize: FONT_SIZE.md,
+    fontWeight: '700',
+    color: COLORS.ink,
+    marginBottom: SPACING.xs,
+  },
+  emptySubtitle: {
+    fontSize: FONT_SIZE.sm,
+    color: COLORS.muted,
+    textAlign: 'center',
+    marginBottom: SPACING.md,
+    paddingHorizontal: SPACING.lg,
+  },
+  resetButton: {
+    minWidth: 140,
+  },
+});

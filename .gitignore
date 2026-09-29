@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+
+# Native builds
+android/
+ios/
+
+# Metro
+.metro-health-check*
+
+# Temporary files
+*.log
+.DS_Store
+Thumbs.db

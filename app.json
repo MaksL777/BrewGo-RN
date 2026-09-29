@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "BrewGo",
+    "slug": "brewgo-rn",
+    "version": "1.0.0",
+    "orientation": "default",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {}
+  }
+}

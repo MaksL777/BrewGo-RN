@@ -35,14 +35,6 @@ const FAQS = [
   },
 ];
 
-/**
- * HelpScreen — reached via Drawer link or Profile.
- *
- * Demonstrates:
- * - Clear Back navigation (`navigation.navigate(SCREENS.MAIN)`) back to the main app
- * - Interactive accordion FAQ cards
- * - Direct link to ContactScreen (`navigation.navigate(SCREENS.CONTACT)`)
- */
 export default function HelpScreen({ navigation }) {
   const [expandedIndex, setExpandedIndex] = useState(0);
 
@@ -95,7 +87,6 @@ export default function HelpScreen({ navigation }) {
           );
         })}
 
-        {/* Contact Support Card */}
         <View style={styles.supportCard}>
           <Feather name="message-circle" size={28} color={COLORS.brownDark} style={{ marginBottom: 8 }} />
           <Text style={styles.supportTitle}>Still have questions?</Text>

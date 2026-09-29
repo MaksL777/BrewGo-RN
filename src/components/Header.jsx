@@ -4,24 +4,6 @@ import { Feather } from '@expo/vector-icons';
 import { COLORS } from '../constants/colors';
 import { SPACING, FONT_SIZE, RADIUS } from '../constants/layout';
 
-/**
- * Header
- *
- * App-level header matching the BrewGo Figma design:
- * - When showBack is true: renders a circular back button on the left with centered title
- * - When showBack is false: renders drawer menu icon on the left, greeting/title in the middle,
- *   and profile avatar or action button on the right
- *
- * Props:
- * - title (string, required)            Main heading, e.g. "Good morning, Alex" or "Menu".
- * - subtitle (string, optional)         Secondary line, e.g. "Riverside Roasters · 0.3 mi".
- * - onMenuPress (function, optional)    Tapping the drawer menu button (☰).
- * - onBackPress (function, optional)    Tapping the circular back button (‹).
- * - onProfilePress (function, optional) Tapping the avatar circle.
- * - onActionPress (function, optional)  Tapping a right-side custom icon button.
- * - actionIcon (string, optional)       Feather icon name for custom action (e.g. "shopping-bag").
- * - showBack (bool, optional)           Renders circular back button instead of menu.
- */
 export default function Header({
   title,
   subtitle,
@@ -66,7 +48,6 @@ export default function Header({
       </View>
 
       {showBack ? (
-        // Balance the back button on the right side if there's no custom action
         onActionPress && actionIcon ? (
           <TouchableOpacity
             style={styles.iconCircle}

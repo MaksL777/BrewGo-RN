@@ -1,12 +1,3 @@
-/**
- * ordersStore.js
- *
- * Centralized in-memory store for orders.
- * Allows CheckoutScreen to add newly confirmed orders,
- * OrdersScreen to display them (refreshed via useFocusEffect),
- * and HomeScreen/OrdersScreen to reorder items.
- */
-
 let orders = [
   {
     id: 'ord-101',
@@ -32,16 +23,10 @@ let orders = [
   },
 ];
 
-/**
- * Returns the current list of orders (newest first).
- */
 export function getOrders() {
   return [...orders];
 }
 
-/**
- * Adds a new order to the front of the list.
- */
 export function addOrder(newOrder) {
   const order = {
     id: `ord-${Date.now().toString().slice(-4)}`,

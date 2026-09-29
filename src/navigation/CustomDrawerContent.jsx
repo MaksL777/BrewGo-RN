@@ -7,14 +7,6 @@ import { COLORS } from '../constants/colors';
 import { SPACING, FONT_SIZE, RADIUS } from '../constants/layout';
 import { SCREENS } from './screens';
 
-/**
- * CustomDrawerContent
- *
- * Side drawer menu matching the BrewGo design:
- * Provides quick access to core sections (Home, Menu, Orders, Profile),
- * secondary app destinations (Help, Contact), and an action (Log out).
- * Demonstrates Drawer navigation integrated with nested Stack and Tab navigators.
- */
 export default function CustomDrawerContent({ navigation, state }) {
   const currentRouteName = state?.routes[state?.index]?.name;
 
@@ -90,7 +82,6 @@ export default function CustomDrawerContent({ navigation, state }) {
       contentContainerStyle={styles.container}
       showsVerticalScrollIndicator={false}
     >
-      {/* Brand Header */}
       <View style={styles.header}>
         <View style={styles.brandIconCircle}>
           <Text style={styles.brandIconGlyph}>☕</Text>

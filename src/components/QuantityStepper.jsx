@@ -4,18 +4,6 @@ import { Feather } from '@expo/vector-icons';
 import { COLORS } from '../constants/colors';
 import { RADIUS, SPACING, FONT_SIZE } from '../constants/layout';
 
-/**
- * QuantityStepper
- *
- * Minus / value / plus control used for order quantities and customizations.
- *
- * Props:
- * - value (number, required)
- * - onChange (function, required)   Called with the new value.
- * - min (number, optional)          Defaults to 0.
- * - max (number, optional)          Defaults to 99.
- * - size ("small" | "medium", optional)
- */
 export default function QuantityStepper({
   value,
   onChange,

@@ -18,22 +18,12 @@ import { COLORS } from '../constants/colors';
 import { SPACING, RADIUS, FONT_SIZE } from '../constants/layout';
 import { SCREENS } from '../navigation/screens';
 
-/**
- * OrdersScreen — third tab.
- *
- * Demonstrates:
- * - `useFocusEffect` (per assignment tips) to re-fetch and refresh order history
- *   every time the user navigates into or switches back to this tab
- * - Interactive order cards with "Reorder" action navigating back into the checkout flow
- * - Empty state with direct navigation to the Menu catalog
- */
 export default function OrdersScreen({ navigation }) {
   const [orders, setOrders] = useState([]);
   const [lastRefreshed, setLastRefreshed] = useState(null);
 
   useFocusEffect(
     useCallback(() => {
-      // Fetch latest orders from shared ordersStore (including newly confirmed orders)
       const currentOrders = getOrders();
       setOrders(currentOrders);
       setLastRefreshed(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));

@@ -17,13 +17,6 @@ import { COLORS } from '../constants/colors';
 import { SPACING, RADIUS, FONT_SIZE } from '../constants/layout';
 import { SCREENS } from '../navigation/screens';
 
-/**
- * ContactScreen — reached via Drawer link or Profile/Help.
- *
- * Demonstrates:
- * - Clear Back navigation (`navigation.navigate(SCREENS.MAIN)`)
- * - Real store details with working action buttons (call, email, directions)
- */
 export default function ContactScreen({ navigation }) {
   const handleCall = () => {
     Alert.alert('Call Store', 'Would you like to dial (555) 019-4471?', [
@@ -66,7 +59,6 @@ export default function ContactScreen({ navigation }) {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        {/* Store Card */}
         <View style={styles.storeCard}>
           <View style={styles.storeIconCircle}>
             <Text style={styles.storeGlyph}>☕</Text>
@@ -78,7 +70,6 @@ export default function ContactScreen({ navigation }) {
           </View>
         </View>
 
-        {/* Details List */}
         <Text style={styles.sectionTitle}>LOCATION & HOURS</Text>
 
         <TouchableOpacity style={styles.detailRow} onPress={handleDirections}>
@@ -116,7 +107,6 @@ export default function ContactScreen({ navigation }) {
           <Feather name="send" size={16} color={COLORS.brownDark} />
         </TouchableOpacity>
 
-        {/* Action Buttons */}
         <View style={styles.buttonGroup}>
           <CustomButton
             title="Call store"

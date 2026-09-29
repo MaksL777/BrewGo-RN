@@ -11,18 +11,6 @@ import { COLORS } from '../constants/colors';
 
 const Drawer = createDrawerNavigator();
 
-/**
- * RootNavigator
- *
- * Outermost navigator (Drawer):
- * - Drawer.Navigator
- *     ├─ Main (MainStackNavigator -> Tab.Navigator [Home, Menu, Orders, Profile] + Stack [ProductDetails, Checkout])
- *     ├─ Help (HelpScreen)
- *     └─ Contact (ContactScreen)
- *
- * Implements the homework requirement for Drawer Navigation for secondary features
- * (filters, support, help, contact).
- */
 export default function RootNavigator() {
   return (
     <NavigationContainer>
@@ -31,7 +19,6 @@ export default function RootNavigator() {
         screenOptions={{
           headerShown: false,
           drawerType: 'front',
-          // Allows swiping open from left edge (task 5)
           swipeEdgeWidth: 50,
           overlayColor: 'rgba(43, 33, 24, 0.45)',
           drawerStyle: {

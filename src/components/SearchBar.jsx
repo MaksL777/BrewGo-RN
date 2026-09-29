@@ -4,17 +4,6 @@ import { Feather } from '@expo/vector-icons';
 import { COLORS } from '../constants/colors';
 import { RADIUS, SPACING, FONT_SIZE } from '../constants/layout';
 
-/**
- * SearchBar
- *
- * Controlled text input for searching drinks matching the Figma design.
- *
- * Props:
- * - value (string, required)
- * - onChangeText (function, required)
- * - placeholder (string, optional)
- * - onSubmit (function, optional)
- */
 export default function SearchBar({
   value,
   onChangeText,

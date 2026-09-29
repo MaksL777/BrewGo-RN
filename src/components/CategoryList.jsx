@@ -3,20 +3,6 @@ import { StyleSheet, FlatList, TouchableOpacity, Text } from 'react-native';
 import { COLORS } from '../constants/colors';
 import { RADIUS, SPACING, FONT_SIZE } from '../constants/layout';
 
-/**
- * CategoryList
- *
- * Horizontally-scrolling row of category chips ("All", "Coffee", "Tea"...).
- * Selection is controlled by the parent (selectedCategory + onSelectCategory)
- * so the same list can drive filtering logic anywhere it's used, and so
- * there is a single source of truth for "what's currently selected"
- * instead of duplicating that state inside the component.
- *
- * Props:
- * - categories (string[], required)
- * - selectedCategory (string, required)
- * - onSelectCategory (function, required)
- */
 export default function CategoryList({ categories, selectedCategory, onSelectCategory }) {
   return (
     <FlatList
@@ -44,7 +30,7 @@ export default function CategoryList({ categories, selectedCategory, onSelectCat
 const styles = StyleSheet.create({
   content: {
     paddingHorizontal: SPACING.lg,
-    gap: SPACING.sm, // RN 0.71+; falls back gracefully via chip marginRight below on older versions
+    gap: SPACING.sm,
   },
   chip: {
     paddingVertical: SPACING.sm,

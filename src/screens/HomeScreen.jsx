@@ -23,22 +23,10 @@ import { SCREENS } from '../navigation/screens';
 
 const CATEGORIES = ['All', 'Coffee', 'Tea', 'Cold Brew', 'Pastry'];
 
-/**
- * HomeScreen
- *
- * Primary tab of MainTabNavigator matching the BrewGo Figma design:
- * - Header with drawer menu button (☰) and profile avatar (👤)
- * - Search bar with real-time product filtering
- * - "Your usual" card with a working "Reorder" button navigating straight to Checkout
- * - Category filter chips ("Coffee", "Tea", "Cold Brew", "Pastry")
- * - "Popular near you" horizontal cards with card press (details) and "+" press
- * - Order confirmation banner when returning from Checkout
- */
 export default function HomeScreen({ navigation, route }) {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [search, setSearch] = useState('');
 
-  // Read orderConfirmed param passed back from CheckoutScreen
   const orderConfirmed = route.params?.orderConfirmed;
   const orderTitle = route.params?.orderTitle;
 
@@ -51,7 +39,6 @@ export default function HomeScreen({ navigation, route }) {
     }
   }, [orderConfirmed, navigation]);
 
-  // Filter products by selected category and search query
   const filteredProducts = useMemo(() => {
     return PRODUCTS.filter((item) => {
       const matchesCategory =
@@ -77,7 +64,6 @@ export default function HomeScreen({ navigation, route }) {
 
   const renderHeader = () => (
     <View>
-      {/* Search Input */}
       <View style={styles.section}>
         <SearchBar
           value={search}
@@ -86,7 +72,6 @@ export default function HomeScreen({ navigation, route }) {
         />
       </View>
 
-      {/* "Your usual" Card matching Figma */}
       {!search && selectedCategory === 'All' && (
         <View style={styles.section}>
           <View style={styles.usualCard}>
@@ -110,7 +95,6 @@ export default function HomeScreen({ navigation, route }) {
         </View>
       )}
 
-      {/* Categories chips */}
       <View style={styles.sectionTitleRow}>
         <Text style={styles.sectionTitle}>Categories</Text>
       </View>
@@ -122,7 +106,6 @@ export default function HomeScreen({ navigation, route }) {
         />
       </View>
 
-      {/* Section Title for Products */}
       <View style={styles.sectionTitleRow}>
         <Text style={styles.sectionTitle}>
           {search ? `Search results (${filteredProducts.length})` : 'Popular near you'}

@@ -12,18 +12,6 @@ import { RADIUS, SPACING, FONT_SIZE } from '../constants/layout';
 
 const Stack = createStackNavigator();
 
-/**
- * MainStackNavigator
- *
- * Linear (Stack) navigation for the primary shopping flow:
- * MainTabs → ProductDetails → Checkout.
- *
- * Screen options are styled according to the assignment requirements:
- * - Custom circular Back button (`<`) matching the Figma design
- * - Warm background (`COLORS.background`), matching theme colors
- * - Centered bold titles
- * - Hides the tab bar when transitioning into Details/Checkout
- */
 export default function MainStackNavigator() {
   return (
     <Stack.Navigator

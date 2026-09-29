@@ -1,7 +1,3 @@
-// Single source of truth for product data. Screens look products up by
-// id from here instead of each keeping their own copy, which is what
-// makes passing just a `productId` between screens (rather than the
-// whole product object) meaningful.
 export const PRODUCTS = [
   {
     id: '1',
@@ -70,10 +66,6 @@ export const YOUR_USUAL = {
   price: 5.75,
 };
 
-/**
- * Looks up a product by id; returns undefined if not found (callers
- * must handle that — see ProductDetailsScreen).
- */
 export function getProductById(id) {
   return PRODUCTS.find((p) => p.id === String(id));
 }

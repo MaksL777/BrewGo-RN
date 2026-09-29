@@ -11,19 +11,6 @@ const TABS = [
   { key: 'profile', label: 'Profile', icon: 'user' },
 ];
 
-/**
- * BottomNavBar
- *
- * Primary app navigation tab bar matching the BrewGo Figma design.
- * Uses `@expo/vector-icons` (Feather) as recommended in the homework instructions:
- * - Active tab: warm coffee brown icon + label + indicator dot below
- * - Inactive tab: muted tone
- * - Adapts to a side rail on tablet width (>= BREAKPOINT_TABLET)
- *
- * Props:
- * - activeTab (string, required)      One of TABS[].key ('home', 'menu', 'orders', 'profile').
- * - onTabPress (function, required)   Called with the pressed tab's key.
- */
 export default function BottomNavBar({ activeTab, onTabPress }) {
   const { width } = useWindowDimensions();
   const isWide = width >= BREAKPOINT_TABLET;

@@ -4,23 +4,6 @@ import { Feather } from '@expo/vector-icons';
 import { COLORS } from '../constants/colors';
 import { RADIUS, SPACING, FONT_SIZE } from '../constants/layout';
 
-/**
- * ProductCard
- *
- * Renders a menu item card matching the BrewGo Figma design:
- * - "grid" variant: used in MenuScreen 2-column layout (vertical photo top, details bottom)
- * - "horizontal" variant: used in HomeScreen "Popular near you" section (photo left, details middle, actions right)
- *
- * Props:
- * - name (string, required)
- * - price (number, required)
- * - description (string, optional)
- * - rating (number, optional)
- * - variant ("grid" | "horizontal", optional)
- * - onPress (function, optional)      Called when the card is tapped (navigates to details).
- * - onAddPress (function, optional)   Called when the "+" button is tapped.
- * - style (object, optional)          Custom layout style overrides from parent.
- */
 export default function ProductCard({
   name,
   price,

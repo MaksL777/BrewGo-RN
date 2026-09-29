@@ -17,14 +17,6 @@ import { COLORS } from '../constants/colors';
 import { SPACING, RADIUS, FONT_SIZE } from '../constants/layout';
 import { SCREENS } from '../navigation/screens';
 
-/**
- * ProfileScreen — fourth tab.
- *
- * Demonstrates:
- * - Rich user profile with interactive settings
- * - Cross-navigation into other tabs (Orders) and Drawer screens (Help, Contact)
- * - Navigation into the app-wide Drawer via `navigation.openDrawer()`
- */
 export default function ProfileScreen({ navigation }) {
   const handleEdit = (section) => {
     Alert.alert('Edit setting', `Would you like to update your ${section}?`, [
@@ -52,7 +44,6 @@ export default function ProfileScreen({ navigation }) {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        {/* User Card */}
         <View style={styles.userCard}>
           <View style={styles.avatarCircle}>
             <Feather name="user" size={32} color={COLORS.brownDark} />
@@ -64,7 +55,6 @@ export default function ProfileScreen({ navigation }) {
           </View>
         </View>
 
-        {/* Section: Account Details */}
         <Text style={styles.sectionTitle}>ACCOUNT DETAILS</Text>
 
         <View style={styles.card}>
@@ -103,7 +93,6 @@ export default function ProfileScreen({ navigation }) {
           </View>
         </View>
 
-        {/* Section: Quick Navigation */}
         <Text style={styles.sectionTitle}>QUICK NAVIGATION</Text>
 
         <TouchableOpacity

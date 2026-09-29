@@ -20,13 +20,6 @@ import { SCREENS } from '../navigation/screens';
 
 const CATEGORIES = ['All', 'Coffee', 'Tea', 'Cold Brew', 'Pastry'];
 
-/**
- * MenuScreen — second tab matching the BrewGo Figma design:
- * - Header with drawer menu button (☰) and cart/orders shortcut
- * - Horizontal category filter chips
- * - 2-column adaptive product grid
- * - Linear navigation to ProductDetails with parameter passing
- */
 export default function MenuScreen({ navigation }) {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const { width } = useWindowDimensions();
@@ -35,7 +28,6 @@ export default function MenuScreen({ navigation }) {
   const cardWidth =
     (width - SPACING.lg * 2 - gridGap * (numColumns - 1)) / numColumns;
 
-  // Filter products according to category
   const filteredProducts = useMemo(() => {
     if (selectedCategory === 'All') return PRODUCTS;
     return PRODUCTS.filter((item) => item.category === selectedCategory);

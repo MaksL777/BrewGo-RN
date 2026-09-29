@@ -25,36 +25,22 @@ const SIZES = [
 const MILKS = ['Whole', 'Oat', 'Almond', 'None'];
 const SUGAR_LEVELS = ['0%', '50%', '100%'];
 
-/**
- * ProductDetailsScreen
- *
- * Detailed item view matching the BrewGo Figma design (`hifi_03_item_detail.png`):
- * - Reached via `navigation.navigate(SCREENS.PRODUCT_DETAILS, { productId })`
- * - Validates productId and provides defensive fallback with back buttons if missing/invalid
- * - Allows full drink customization: Size (S/M/L), Milk (Whole/Oat/Almond/None),
- *   Extra shots stepper, and Sugar level
- * - Dynamic price calculation that recalculates live with every selected option
- * - Passes full configured order details forward to `SCREENS.CHECKOUT`
- */
 export default function ProductDetailsScreen({ route, navigation }) {
   const productId = route.params?.productId;
   const product = productId ? getProductById(productId) : undefined;
 
-  // Customization options state
   const [size, setSize] = useState('M');
   const [milk, setMilk] = useState('Oat');
   const [extraShots, setExtraShots] = useState(1);
   const [sugar, setSugar] = useState('50%');
   const [qty, setQty] = useState(1);
 
-  // Set the Stack header title dynamically once product is loaded
   useLayoutEffect(() => {
     navigation.setOptions({
       title: product ? product.name : 'Product Details',
     });
   }, [navigation, product]);
 
-  // Calculate live unit price based on options
   const unitPrice = useMemo(() => {
     if (!product) return 0;
     const sizeAddon = SIZES.find((s) => s.key === size)?.extra || 0;
@@ -66,7 +52,6 @@ export default function ProductDetailsScreen({ route, navigation }) {
     return (unitPrice * qty).toFixed(2);
   }, [unitPrice, qty]);
 
-  // Defensive fallback (task 5): if productId is missing or invalid
   if (!product) {
     return (
       <SafeAreaView style={styles.safeArea}>
@@ -117,12 +102,10 @@ export default function ProductDetailsScreen({ route, navigation }) {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        {/* Hero image container matching Figma */}
         <View style={styles.heroContainer}>
           <Text style={styles.heroGlyph}>☕</Text>
         </View>
 
-        {/* Product Name & Base Price */}
         <View style={styles.headerRow}>
           <View style={styles.headerInfo}>
             <Text style={styles.name}>{product.name}</Text>
@@ -137,7 +120,6 @@ export default function ProductDetailsScreen({ route, navigation }) {
 
         <View style={styles.divider} />
 
-        {/* Size Selection (S, M, L) */}
         <Text style={styles.sectionLabel}>Size</Text>
         <View style={styles.chipRow}>
           {SIZES.map((s) => {
@@ -159,7 +141,6 @@ export default function ProductDetailsScreen({ route, navigation }) {
           })}
         </View>
 
-        {/* Milk Selection */}
         <Text style={styles.sectionLabel}>Milk</Text>
         <View style={styles.chipRow}>
           {MILKS.map((m) => {
@@ -184,7 +165,6 @@ export default function ProductDetailsScreen({ route, navigation }) {
           })}
         </View>
 
-        {/* Extra Shots Stepper */}
         <View style={styles.stepperRow}>
           <View>
             <Text style={styles.sectionLabelInline}>Extra shots</Text>
@@ -198,7 +178,6 @@ export default function ProductDetailsScreen({ route, navigation }) {
           />
         </View>
 
-        {/* Sugar Level */}
         <Text style={styles.sectionLabel}>Sugar level</Text>
         <View style={styles.chipRow}>
           {SUGAR_LEVELS.map((s) => {
@@ -224,7 +203,6 @@ export default function ProductDetailsScreen({ route, navigation }) {
         </View>
       </ScrollView>
 
-      {/* Sticky Bottom Actions matching Figma */}
       <View style={styles.footer}>
         <View style={styles.qtyContainer}>
           <Text style={styles.qtyLabel}>Qty</Text>

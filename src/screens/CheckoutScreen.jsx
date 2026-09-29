@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -19,17 +19,6 @@ import { COLORS } from '../constants/colors';
 import { SPACING, RADIUS, FONT_SIZE } from '../constants/layout';
 import { SCREENS } from '../navigation/screens';
 
-/**
- * CheckoutScreen
- *
- * Final step of the linear shopping flow matching `hifi_04_checkout.png`:
- * - Reached from ProductDetailsScreen with order parameters
- * - Defensive fallback if parameters are missing (Task 5)
- * - Editable item quantity with live price recalculation
- * - Pickup time and interactive payment method selector
- * - Subtotal, tax, and total breakdown
- * - Confirms order into centralized `ordersStore` and navigates back to Home with confirmation params
- */
 export default function CheckoutScreen({ route, navigation }) {
   const {
     productId,
@@ -45,7 +34,6 @@ export default function CheckoutScreen({ route, navigation }) {
   const [qty, setQty] = useState(initialQty);
   const [paymentMethod, setPaymentMethod] = useState('Visa •••• 4471');
 
-  // Defensive fallback if reached without valid order data
   if (!product || !qty) {
     return (
       <SafeAreaView style={styles.safeArea}>
@@ -75,16 +63,13 @@ export default function CheckoutScreen({ route, navigation }) {
     );
   }
 
-  // Derive size label
   const sizeNames = { S: 'Small', M: 'Medium', L: 'Large' };
   const sizeLabel = sizeNames[size] || size;
 
-  // Customization summary string
   const customSummary = `${sizeLabel} · ${milk} milk${
     extraShots > 0 ? ` · ${extraShots} shot${extraShots > 1 ? 's' : ''}` : ''
   } · ${sugar} sugar`;
 
-  // Unit price calculation
   const itemUnitPrice =
     passedUnitPrice ||
     product.price + (size === 'L' ? 1.0 : size === 'M' ? 0.5 : 0) + extraShots * 0.75;
@@ -108,7 +93,6 @@ export default function CheckoutScreen({ route, navigation }) {
   };
 
   const handleConfirmOrder = () => {
-    // Add to shared ordersStore
     const newOrder = addOrder({
       productId: product.id,
       title: product.name,
@@ -118,7 +102,6 @@ export default function CheckoutScreen({ route, navigation }) {
       paymentMethod,
     });
 
-    // Navigate to Home tab in nested tab navigator with confirmation params
     navigation.navigate(SCREENS.MAIN_TABS, {
       screen: SCREENS.HOME,
       params: {
@@ -135,7 +118,6 @@ export default function CheckoutScreen({ route, navigation }) {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        {/* Cart Item Card */}
         <View style={styles.card}>
           <View style={styles.itemRow}>
             <View style={styles.itemThumb}>
@@ -160,7 +142,6 @@ export default function CheckoutScreen({ route, navigation }) {
           </View>
         </View>
 
-        {/* Pickup Time Info Card */}
         <View style={styles.infoCard}>
           <View style={styles.infoIconCircle}>
             <Feather name="clock" size={18} color={COLORS.brownDark} />
@@ -171,7 +152,6 @@ export default function CheckoutScreen({ route, navigation }) {
           </View>
         </View>
 
-        {/* Payment Info Card with working "Change" button */}
         <View style={styles.infoCard}>
           <View style={styles.infoIconCircle}>
             <Feather name="credit-card" size={18} color={COLORS.brownDark} />
@@ -189,7 +169,6 @@ export default function CheckoutScreen({ route, navigation }) {
           </TouchableOpacity>
         </View>
 
-        {/* Receipt / Cost Breakdown */}
         <View style={styles.receiptCard}>
           <Row label="Subtotal" value={subtotal} />
           <Row label="Estimated tax (8%)" value={tax} />
@@ -198,7 +177,6 @@ export default function CheckoutScreen({ route, navigation }) {
         </View>
       </ScrollView>
 
-      {/* Sticky Bottom Actions */}
       <View style={styles.footer}>
         <CustomButton
           title={`Confirm order — $${total.toFixed(2)}`}

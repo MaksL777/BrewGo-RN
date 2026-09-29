@@ -156,10 +156,15 @@ NavigationContainer
 
 ## 📸 Скриншоти застосунку
 
-### Екрани навігації:
-| Головна (Home) | Меню (Menu) | Замовлення (Orders) | Профіль (Profile) |
-|:---:|:---:|:---:|:---:|
-| ![Home](assets/screenshots/app_01_home.png) | ![Menu](assets/screenshots/app_02_menu.png) | ![Orders](assets/screenshots/app_03_orders.png) | ![Profile](assets/screenshots/app_04_profile.png) |
+### Демонстрація роботи навігації (Navigation Flow):
+
+| 🏠 Головна (Home) | ▦ Меню (Menu) | 🏷 Фільтрація (Filter) |
+|:---:|:---:|:---:|
+| ![Home](assets/screenshots/navigation/01_home_screen.png) | ![Menu](assets/screenshots/navigation/02_menu_screen.png) | ![Filter](assets/screenshots/navigation/05_menu_category_filter.png) |
+
+| 🛍 Замовлення (Orders) | 👤 Профіль (Profile) | ☰ Бокове меню (Drawer) |
+|:---:|:---:|:---:|
+| ![Orders](assets/screenshots/navigation/03_orders_screen.png) | ![Profile](assets/screenshots/navigation/04_profile_screen.png) | ![Drawer](assets/screenshots/navigation/06_drawer_navigation.png) |
 
 ### Референси дизайну з Figma:
 | Головний екран | Каталог меню | Деталі напою | Оформлення замовлення |

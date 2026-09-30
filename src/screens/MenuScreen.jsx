@@ -7,7 +7,9 @@ import {
   useWindowDimensions,
   Text,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import Header from '../components/Header';
 import CategoryList from '../components/CategoryList';
@@ -15,6 +17,7 @@ import ProductCard from '../components/ProductCard';
 import CustomButton from '../components/CustomButton';
 
 import { fetchCoffeeData } from '../api';
+import { addItem } from '../redux/cartSlice';
 import { COLORS } from '../constants/colors';
 import { SPACING, BREAKPOINT_TABLET, FONT_SIZE } from '../constants/layout';
 import { SCREENS } from '../navigation/screens';
@@ -26,6 +29,7 @@ export default function MenuScreen({ navigation }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const dispatch = useDispatch();
 
   const { width } = useWindowDimensions();
   const numColumns = width >= BREAKPOINT_TABLET ? 3 : 2;
@@ -63,14 +67,28 @@ export default function MenuScreen({ navigation }) {
     return products.filter((item) => item.category === selectedCategory);
   }, [selectedCategory, products]);
 
+  const handleAddToCart = (item) => {
+    dispatch(
+      addItem({
+        cartItemId: Date.now().toString(),
+        id: item.id,
+        productName: item.name,
+        quantity: 1,
+        unitPrice: item.price,
+        customization: 'Medium · Oat milk · 50% sugar',
+      })
+    );
+    Alert.alert('Added to Cart', `${item.name} was added to your cart.`);
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <Header
         title="Menu"
         subtitle="Browse the full catalog"
         onMenuPress={() => navigation.openDrawer()}
-        actionIcon="shopping-bag"
-        onActionPress={() => navigation.navigate(SCREENS.ORDERS)}
+        actionIcon="shopping-cart"
+        onActionPress={() => navigation.navigate(SCREENS.CART)}
       />
 
       <View style={styles.sectionNoPadding}>
@@ -130,12 +148,7 @@ export default function MenuScreen({ navigation }) {
               onPress={() =>
                 navigation.navigate(SCREENS.PRODUCT_DETAILS, { product: item })
               }
-              onAddPress={() =>
-                navigation.navigate(SCREENS.CHECKOUT, {
-                  product: item,
-                  quantity: 1,
-                })
-              }
+              onAddPress={() => handleAddToCart(item)}
             />
           )}
           ListEmptyComponent={

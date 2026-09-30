@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   Platform,
 } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { addItem } from '../redux/cartSlice';
 
 import CustomButton from '../components/CustomButton';
 import QuantityStepper from '../components/QuantityStepper';
@@ -28,6 +30,7 @@ const SUGAR_LEVELS = ['0%', '50%', '100%'];
 export default function ProductDetailsScreen({ route, navigation }) {
   const productId = route.params?.productId;
   const product = route.params?.product || (productId ? getProductById(productId) : undefined);
+  const dispatch = useDispatch();
 
   const [size, setSize] = useState('M');
   const [milk, setMilk] = useState('Oat');
@@ -84,16 +87,24 @@ export default function ProductDetailsScreen({ route, navigation }) {
   }
 
   const handleGoToCheckout = () => {
-    navigation.navigate(SCREENS.CHECKOUT, {
-      productId: product.id,
-      quantity: qty,
-      size,
-      milk,
-      extraShots,
-      sugar,
-      unitPrice,
-      totalPrice: parseFloat(totalPrice),
-    });
+    const sizeNames = { S: 'Small', M: 'Medium', L: 'Large' };
+    const sizeLabel = sizeNames[size] || size;
+    const customSummary = `${sizeLabel} · ${milk} milk${
+      extraShots > 0 ? ` · ${extraShots} shot${extraShots > 1 ? 's' : ''}` : ''
+    } · ${sugar} sugar`;
+
+    dispatch(
+      addItem({
+        cartItemId: Date.now().toString(),
+        id: product.id,
+        productName: product.name,
+        quantity: qty,
+        unitPrice: parseFloat(unitPrice.toFixed(2)),
+        customization: customSummary,
+      })
+    );
+
+    navigation.navigate(SCREENS.CART);
   };
 
   return (

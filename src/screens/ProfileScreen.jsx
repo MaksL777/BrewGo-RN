@@ -8,16 +8,20 @@ import {
   TouchableOpacity,
   Alert,
   Platform,
+  Switch,
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
 import Header from '../components/Header';
 import CustomButton from '../components/CustomButton';
+import { useTheme } from '../context/ThemeContext';
 import { COLORS } from '../constants/colors';
 import { SPACING, RADIUS, FONT_SIZE } from '../constants/layout';
 import { SCREENS } from '../navigation/screens';
 
 export default function ProfileScreen({ navigation }) {
+  const { theme, themeMode, toggleTheme } = useTheme();
+
   const handleEdit = (section) => {
     Alert.alert('Edit setting', `Would you like to update your ${section}?`, [
       { text: 'Cancel', style: 'cancel' },
@@ -33,7 +37,7 @@ export default function ProfileScreen({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.background }]}>
       <Header
         title="Profile"
         subtitle="Alex Morgan"
@@ -44,51 +48,58 @@ export default function ProfileScreen({ navigation }) {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.userCard}>
+        <View style={[styles.userCard, { backgroundColor: theme.card }]}>
           <View style={styles.avatarCircle}>
-            <Feather name="user" size={32} color={COLORS.brownDark} />
+            <Feather name="user" size={32} color={theme.primary} />
           </View>
           <View style={styles.userInfo}>
-            <Text style={styles.userName}>Alex Morgan</Text>
-            <Text style={styles.userTier}>⭐ Gold Member · 450 pts</Text>
+            <Text style={[styles.userName, { color: theme.text }]}>Alex Morgan</Text>
+            <Text style={[styles.userTier, { color: theme.primary }]}>⭐ Gold Member · 450 pts</Text>
             <Text style={styles.userDate}>Coffee lover since 2023</Text>
+          </View>
+        </View>
+
+        <Text style={styles.sectionTitle}>PREFERENCES</Text>
+        
+        <View style={[styles.card, { backgroundColor: theme.card }]}>
+          <View style={styles.cardRow}>
+            <View style={styles.cardText}>
+              <Text style={styles.label}>Dark Mode</Text>
+              <Text style={[styles.value, { color: theme.text }]}>
+                {themeMode === 'dark' ? 'On' : 'Off'}
+              </Text>
+            </View>
+            <Switch
+              value={themeMode === 'dark'}
+              onValueChange={toggleTheme}
+              trackColor={{ false: '#767577', true: theme.primary }}
+              thumbColor={themeMode === 'dark' ? '#fff' : '#f4f3f4'}
+            />
           </View>
         </View>
 
         <Text style={styles.sectionTitle}>ACCOUNT DETAILS</Text>
 
-        <View style={styles.card}>
+        <View style={[styles.card, { backgroundColor: theme.card }]}>
           <View style={styles.cardRow}>
             <View style={styles.cardText}>
               <Text style={styles.label}>Email</Text>
-              <Text style={styles.value}>alex.morgan@example.com</Text>
+              <Text style={[styles.value, { color: theme.text }]}>alex.morgan@example.com</Text>
             </View>
             <TouchableOpacity onPress={() => handleEdit('Email')}>
-              <Text style={styles.editAction}>Edit</Text>
+              <Text style={[styles.editAction, { color: theme.primary }]}>Edit</Text>
             </TouchableOpacity>
           </View>
         </View>
 
-        <View style={styles.card}>
+        <View style={[styles.card, { backgroundColor: theme.card }]}>
           <View style={styles.cardRow}>
             <View style={styles.cardText}>
               <Text style={styles.label}>Saved payment</Text>
-              <Text style={styles.value}>Visa •••• 4471</Text>
+              <Text style={[styles.value, { color: theme.text }]}>Visa •••• 4471</Text>
             </View>
             <TouchableOpacity onPress={() => handleEdit('Payment Method')}>
-              <Text style={styles.editAction}>Edit</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <View style={styles.card}>
-          <View style={styles.cardRow}>
-            <View style={styles.cardText}>
-              <Text style={styles.label}>Favorite shop</Text>
-              <Text style={styles.value}>Riverside Roasters · 0.3 mi</Text>
-            </View>
-            <TouchableOpacity onPress={() => navigation.navigate(SCREENS.CONTACT)}>
-              <Text style={styles.editAction}>View</Text>
+              <Text style={[styles.editAction, { color: theme.primary }]}>Edit</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -96,34 +107,23 @@ export default function ProfileScreen({ navigation }) {
         <Text style={styles.sectionTitle}>QUICK NAVIGATION</Text>
 
         <TouchableOpacity
-          style={styles.navRow}
+          style={[styles.navRow, { backgroundColor: theme.card }]}
           onPress={() => navigation.navigate(SCREENS.ORDERS)}
         >
           <View style={styles.navRowLeft}>
-            <Feather name="shopping-bag" size={18} color={COLORS.brownDark} style={styles.navIcon} />
-            <Text style={styles.navLabel}>My Orders</Text>
+            <Feather name="shopping-bag" size={18} color={theme.primary} style={styles.navIcon} />
+            <Text style={[styles.navLabel, { color: theme.text }]}>My Orders</Text>
           </View>
           <Feather name="chevron-right" size={18} color={COLORS.muted} />
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.navRow}
+          style={[styles.navRow, { backgroundColor: theme.card }]}
           onPress={() => navigation.navigate(SCREENS.HELP)}
         >
           <View style={styles.navRowLeft}>
-            <Feather name="help-circle" size={18} color={COLORS.brownDark} style={styles.navIcon} />
-            <Text style={styles.navLabel}>Help & FAQ</Text>
-          </View>
-          <Feather name="chevron-right" size={18} color={COLORS.muted} />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.navRow}
-          onPress={() => navigation.navigate(SCREENS.CONTACT)}
-        >
-          <View style={styles.navRowLeft}>
-            <Feather name="phone-call" size={18} color={COLORS.brownDark} style={styles.navIcon} />
-            <Text style={styles.navLabel}>Contact Store</Text>
+            <Feather name="help-circle" size={18} color={theme.primary} style={styles.navIcon} />
+            <Text style={[styles.navLabel, { color: theme.text }]}>Help & FAQ</Text>
           </View>
           <Feather name="chevron-right" size={18} color={COLORS.muted} />
         </TouchableOpacity>
@@ -150,7 +150,6 @@ export default function ProfileScreen({ navigation }) {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: COLORS.background,
   },
   content: {
     padding: SPACING.lg,
@@ -159,7 +158,6 @@ const styles = StyleSheet.create({
   userCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.cardAlt,
     borderRadius: RADIUS.lg,
     padding: SPACING.md,
     marginBottom: SPACING.lg,
@@ -177,7 +175,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: RADIUS.pill,
-    backgroundColor: COLORS.card,
+    backgroundColor: COLORS.cardAlt,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: SPACING.md,
@@ -188,12 +186,10 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: FONT_SIZE.lg,
     fontWeight: '700',
-    color: COLORS.ink,
   },
   userTier: {
     fontSize: FONT_SIZE.xs,
     fontWeight: '700',
-    color: COLORS.brownDark,
     marginTop: 2,
   },
   userDate: {
@@ -211,7 +207,6 @@ const styles = StyleSheet.create({
     marginTop: SPACING.sm,
   },
   card: {
-    backgroundColor: COLORS.card,
     borderRadius: RADIUS.md,
     padding: SPACING.md,
     marginBottom: SPACING.sm,
@@ -240,20 +235,17 @@ const styles = StyleSheet.create({
   value: {
     fontSize: FONT_SIZE.sm,
     fontWeight: '700',
-    color: COLORS.ink,
     marginTop: 2,
   },
   editAction: {
     fontSize: FONT_SIZE.xs,
     fontWeight: '700',
-    color: COLORS.brownDark,
     paddingLeft: SPACING.sm,
   },
   navRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: COLORS.card,
     borderRadius: RADIUS.md,
     padding: SPACING.md,
     marginBottom: SPACING.sm,
@@ -268,7 +260,6 @@ const styles = StyleSheet.create({
   navLabel: {
     fontSize: FONT_SIZE.sm,
     fontWeight: '600',
-    color: COLORS.ink,
   },
   drawerButton: {
     marginTop: SPACING.lg,

@@ -6,6 +6,7 @@ import { Feather } from '@expo/vector-icons';
 import MainTabNavigator from './MainTabNavigator';
 import ProductDetailsScreen from '../screens/ProductDetailsScreen';
 import CheckoutScreen from '../screens/CheckoutScreen';
+import CartScreen from '../screens/CartScreen';
 import { SCREENS } from './screens';
 import { COLORS } from '../constants/colors';
 import { RADIUS, SPACING, FONT_SIZE } from '../constants/layout';
@@ -75,6 +76,13 @@ export default function MainStackNavigator() {
         component={CheckoutScreen}
         options={{
           title: 'Your order',
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.CART}
+        component={CartScreen}
+        options={{
+          title: 'Your Cart',
         }}
       />
     </Stack.Navigator>

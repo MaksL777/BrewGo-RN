@@ -7,8 +7,10 @@ import {
   Text,
   TouchableOpacity,
   Platform,
+  Alert,
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import { useDispatch } from 'react-redux';
 
 import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
@@ -17,6 +19,7 @@ import ProductCard from '../components/ProductCard';
 import CustomButton from '../components/CustomButton';
 
 import { PRODUCTS, YOUR_USUAL } from '../data/products';
+import { addItem } from '../redux/cartSlice';
 import { COLORS } from '../constants/colors';
 import { SPACING, RADIUS, FONT_SIZE } from '../constants/layout';
 import { SCREENS } from '../navigation/screens';
@@ -26,6 +29,7 @@ const CATEGORIES = ['All', 'Coffee', 'Tea', 'Cold Brew', 'Pastry'];
 export default function HomeScreen({ navigation, route }) {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [search, setSearch] = useState('');
+  const dispatch = useDispatch();
 
   const orderConfirmed = route.params?.orderConfirmed;
   const orderTitle = route.params?.orderTitle;
@@ -52,14 +56,31 @@ export default function HomeScreen({ navigation, route }) {
   }, [selectedCategory, search]);
 
   const handleReorderUsual = () => {
-    navigation.navigate(SCREENS.CHECKOUT, {
-      productId: YOUR_USUAL.productId,
-      quantity: 1,
-      size: YOUR_USUAL.size,
-      milk: YOUR_USUAL.milk,
-      extraShots: YOUR_USUAL.extraShots,
-      sugar: YOUR_USUAL.sugar,
-    });
+    dispatch(
+      addItem({
+        cartItemId: Date.now().toString(),
+        id: YOUR_USUAL.productId,
+        productName: YOUR_USUAL.name,
+        quantity: 1,
+        unitPrice: 4.99, // default
+        customization: 'Medium · Oat milk · 50% sugar',
+      })
+    );
+    navigation.navigate(SCREENS.CART);
+  };
+
+  const handleAddToCart = (item) => {
+    dispatch(
+      addItem({
+        cartItemId: Date.now().toString(),
+        id: item.id,
+        productName: item.name,
+        quantity: 1,
+        unitPrice: item.price,
+        customization: 'Medium · Oat milk · 50% sugar',
+      })
+    );
+    Alert.alert('Added to Cart', `${item.name} was added to your cart.`);
   };
 
   const renderHeader = () => (
@@ -152,12 +173,7 @@ export default function HomeScreen({ navigation, route }) {
             onPress={() =>
               navigation.navigate(SCREENS.PRODUCT_DETAILS, { productId: item.id })
             }
-            onAddPress={() =>
-              navigation.navigate(SCREENS.CHECKOUT, {
-                productId: item.id,
-                quantity: 1,
-              })
-            }
+            onAddPress={() => handleAddToCart(item)}
           />
         )}
         ListEmptyComponent={

@@ -11,4 +11,5 @@ export const SCREENS = {
   MENU: 'Menu',
   ORDERS: 'Orders',
   PROFILE: 'Profile',
+  CART: 'Cart',
 };

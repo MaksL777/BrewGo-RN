@@ -22,6 +22,7 @@ import { SCREENS } from '../navigation/screens';
 export default function CheckoutScreen({ route, navigation }) {
   const {
     productId,
+    product: passedProduct,
     quantity: initialQty = 1,
     size = 'M',
     milk = 'Oat',
@@ -30,7 +31,7 @@ export default function CheckoutScreen({ route, navigation }) {
     unitPrice: passedUnitPrice,
   } = route.params ?? {};
 
-  const product = productId ? getProductById(productId) : undefined;
+  const product = passedProduct || (productId ? getProductById(productId) : undefined);
   const [qty, setQty] = useState(initialQty);
   const [paymentMethod, setPaymentMethod] = useState('Visa •••• 4471');
 

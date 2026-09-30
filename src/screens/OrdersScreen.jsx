@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
+import dayjs from 'dayjs';
 
 import Header from '../components/Header';
 import CustomButton from '../components/CustomButton';
@@ -26,7 +27,7 @@ export default function OrdersScreen({ navigation }) {
     useCallback(() => {
       const currentOrders = getOrders();
       setOrders(currentOrders);
-      setLastRefreshed(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+      setLastRefreshed(dayjs().format('HH:mm:ss'));
       return () => {};
     }, [])
   );

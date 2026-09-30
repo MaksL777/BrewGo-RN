@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Platform } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
 import { COLORS } from '../constants/colors';
 import { RADIUS, SPACING, FONT_SIZE } from '../constants/layout';
 
-export default function ProductCard({
+const ProductCard = ({
+  item,
   name,
   price,
   description,
@@ -14,16 +15,25 @@ export default function ProductCard({
   onPress,
   onAddPress,
   style,
-}) {
+}) => {
   const { theme } = useTheme();
   const isHorizontal = variant === 'horizontal';
+
+  const handlePress = React.useCallback(() => {
+    if (onPress) onPress(item);
+  }, [onPress, item]);
+
+  const handleAddPress = React.useCallback(() => {
+    if (onAddPress) onAddPress(item);
+    else if (onPress) onPress(item);
+  }, [onAddPress, onPress, item]);
 
   if (isHorizontal) {
     return (
       <TouchableOpacity
         style={[styles.cardHorizontal, { backgroundColor: theme.card }, style]}
         activeOpacity={0.8}
-        onPress={onPress}
+        onPress={handlePress}
       >
         <View style={styles.thumbHorizontal}>
           <Text style={styles.coffeeGlyph}>☕</Text>
@@ -49,7 +59,7 @@ export default function ProductCard({
           ) : null}
           <TouchableOpacity
             style={styles.addButton}
-            onPress={onAddPress || onPress}
+            onPress={handleAddPress}
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
             accessibilityLabel={`Add ${name} to order`}
           >
@@ -64,7 +74,7 @@ export default function ProductCard({
     <TouchableOpacity
       style={[styles.cardGrid, { backgroundColor: theme.card }, style]}
       activeOpacity={0.8}
-      onPress={onPress}
+      onPress={handlePress}
     >
       <View style={styles.thumbGrid}>
         <Text style={styles.coffeeGlyph}>☕</Text>
@@ -81,7 +91,7 @@ export default function ProductCard({
 
       <TouchableOpacity
         style={styles.addButtonGrid}
-        onPress={onAddPress || onPress}
+        onPress={handleAddPress}
         hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         accessibilityLabel={`Add ${name} to order`}
       >
@@ -221,3 +231,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default memo(ProductCard);

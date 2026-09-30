@@ -69,7 +69,7 @@ export default function MenuScreen({ navigation }) {
     return products.filter((item) => item.category === selectedCategory);
   }, [selectedCategory, products]);
 
-  const handleAddToCart = (item) => {
+  const handleAddToCart = React.useCallback((item) => {
     dispatch(
       addItem({
         cartItemId: Date.now().toString(),
@@ -81,7 +81,11 @@ export default function MenuScreen({ navigation }) {
       })
     );
     Alert.alert('Added to Cart', `${item.name} was added to your cart.`);
-  };
+  }, [dispatch]);
+
+  const handlePressItem = React.useCallback((item) => {
+    navigation.navigate(SCREENS.PRODUCT_DETAILS, { product: item });
+  }, [navigation]);
 
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.background }]}>
@@ -142,15 +146,14 @@ export default function MenuScreen({ navigation }) {
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <ProductCard
+              item={item}
               name={item.name}
               price={item.price}
               rating={item.rating}
               variant="grid"
               style={{ width: cardWidth }}
-              onPress={() =>
-                navigation.navigate(SCREENS.PRODUCT_DETAILS, { product: item })
-              }
-              onAddPress={() => handleAddToCart(item)}
+              onPress={handlePressItem}
+              onAddPress={handleAddToCart}
             />
           )}
           ListEmptyComponent={

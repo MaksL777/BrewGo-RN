@@ -71,7 +71,7 @@ export default function HomeScreen({ navigation, route }) {
     navigation.navigate(SCREENS.CART);
   };
 
-  const handleAddToCart = (item) => {
+  const handleAddToCart = React.useCallback((item) => {
     dispatch(
       addItem({
         cartItemId: Date.now().toString(),
@@ -83,7 +83,11 @@ export default function HomeScreen({ navigation, route }) {
       })
     );
     Alert.alert('Added to Cart', `${item.name} was added to your cart.`);
-  };
+  }, [dispatch]);
+
+  const handlePressItem = React.useCallback((item) => {
+    navigation.navigate(SCREENS.PRODUCT_DETAILS, { productId: item.id });
+  }, [navigation]);
 
   const renderHeader = () => (
     <View>
@@ -167,15 +171,14 @@ export default function HomeScreen({ navigation, route }) {
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
           <ProductCard
+            item={item}
             name={item.name}
             price={item.price}
             description={item.description}
             rating={item.rating}
             variant="horizontal"
-            onPress={() =>
-              navigation.navigate(SCREENS.PRODUCT_DETAILS, { productId: item.id })
-            }
-            onAddPress={() => handleAddToCart(item)}
+            onPress={handlePressItem}
+            onAddPress={handleAddToCart}
           />
         )}
         ListEmptyComponent={

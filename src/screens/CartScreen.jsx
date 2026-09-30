@@ -6,6 +6,7 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
+  LayoutAnimation,
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { Feather } from '@expo/vector-icons';
@@ -25,6 +26,7 @@ export default function CartScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const handleRemove = (cartItemId) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     dispatch(removeItem(cartItemId));
   };
 
@@ -101,6 +103,7 @@ export default function CartScreen({ navigation }) {
             <CustomButton
               title="Proceed to Checkout"
               onPress={() => {
+                LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
                 dispatch(clearCart());
                 navigation.navigate(SCREENS.HOME, {
                   orderConfirmed: true,

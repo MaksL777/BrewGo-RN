@@ -32,7 +32,7 @@ const ProductCard = ({
     return (
       <TouchableOpacity
         style={[styles.cardHorizontal, { backgroundColor: theme.card }, style]}
-        activeOpacity={0.8}
+        activeOpacity={0.6}
         onPress={handlePress}
       >
         <View style={styles.thumbHorizontal}>
@@ -60,6 +60,7 @@ const ProductCard = ({
           <TouchableOpacity
             style={styles.addButton}
             onPress={handleAddPress}
+            activeOpacity={0.6}
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
             accessibilityLabel={`Add ${name} to order`}
           >
@@ -73,7 +74,7 @@ const ProductCard = ({
   return (
     <TouchableOpacity
       style={[styles.cardGrid, { backgroundColor: theme.card }, style]}
-      activeOpacity={0.8}
+      activeOpacity={0.6}
       onPress={handlePress}
     >
       <View style={styles.thumbGrid}>
@@ -92,6 +93,7 @@ const ProductCard = ({
       <TouchableOpacity
         style={styles.addButtonGrid}
         onPress={handleAddPress}
+        activeOpacity={0.6}
         hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         accessibilityLabel={`Add ${name} to order`}
       >
@@ -152,6 +154,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: 2,
+    paddingRight: 32,
   },
   price: {
     fontSize: FONT_SIZE.sm,
@@ -161,7 +164,6 @@ const styles = StyleSheet.create({
   stars: {
     fontSize: FONT_SIZE.xs,
     color: COLORS.caramel,
-    marginRight: 24,
   },
   addButtonGrid: {
     position: 'absolute',

@@ -104,11 +104,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: SPACING.lg,
-    paddingBottom: SPACING.md,
+    paddingBottom: SPACING.lg,
     backgroundColor: COLORS.background,
     paddingTop: Platform.select({
-      ios: SPACING.md,
-      android: (StatusBar.currentHeight || 0) + SPACING.sm,
+      ios: SPACING.lg,
+      android: (StatusBar.currentHeight || 0) + SPACING.lg,
     }),
   },
   textBlock: {

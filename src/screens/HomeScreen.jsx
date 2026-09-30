@@ -211,6 +211,7 @@ const styles = StyleSheet.create({
   listContent: {
     paddingHorizontal: SPACING.lg,
     paddingBottom: SPACING.xl,
+    paddingTop: SPACING.md,
   },
   section: {
     marginBottom: SPACING.md,

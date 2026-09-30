@@ -15,7 +15,7 @@ export default function CustomButton({
 
   return (
     <TouchableOpacity
-      activeOpacity={0.75}
+      activeOpacity={0.5}
       onPress={onPress}
       disabled={disabled}
       style={[

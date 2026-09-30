@@ -27,7 +27,6 @@ const SUGAR_LEVELS = ['0%', '50%', '100%'];
 
 export default function ProductDetailsScreen({ route, navigation }) {
   const productId = route.params?.productId;
-  // Use passed product object or fallback to lookup
   const product = route.params?.product || (productId ? getProductById(productId) : undefined);
 
   const [size, setSize] = useState('M');

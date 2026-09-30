@@ -39,14 +39,13 @@ export default function MenuScreen({ navigation }) {
         setLoading(true);
         setError(null);
         const data = await fetchCoffeeData();
-        // Map API data to expected product structure
         const mappedData = data.map((item, index) => ({
           id: String(item.id || index),
           name: item.title,
           description: item.description || '',
-          price: 4.99, // default mock price as API doesn't have prices
-          rating: 4.5, // default mock rating
-          category: 'Coffee', // default category
+          price: 4.99,
+          rating: 4.5,
+          category: 'Coffee',
         }));
         setProducts(mappedData);
       } catch (err) {

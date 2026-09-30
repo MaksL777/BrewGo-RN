@@ -20,7 +20,13 @@ npx expo start
 
 ## 📸 Скриншоти
 
-*(Додайте сюди скриншоти роботи застосунку після інтеграції API)*
+| Меню з даними API | Деталі напою з API | Оформлення |
+| :---: | :---: | :---: |
+| ![Меню](assets/screenshots/api/01_menu.png) | ![Деталі](assets/screenshots/api/02_details.png) | ![Checkout](assets/screenshots/api/03_checkout.png) |
+
+| Головний екран | Замовлення | Профіль |
+| :---: | :---: | :---: |
+| ![Головна](assets/screenshots/api/04_home.png) | ![Замовлення](assets/screenshots/api/05_orders.png) | ![Профіль](assets/screenshots/api/06_profile.png) |
 
 ## 📦 Здача
 

@@ -20,7 +20,9 @@ npx expo start
 
 ## 📸 Скриншоти
 
-*(Додайте сюди скриншоти роботи застосунку після інтеграції Context API та Redux - наприклад, перемикач теми та сторінку кошика)*
+| Кошик (Redux + Темна тема) | Налаштування теми (Context API) |
+| :---: | :---: |
+| ![Cart Dark](assets/screenshots/context_redux/01_cart_dark.png) | ![Profile Dark](assets/screenshots/context_redux/02_profile_dark.png) |
 
 ## 📦 Здача
 

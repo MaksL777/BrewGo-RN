@@ -18,6 +18,7 @@ import CustomButton from '../components/CustomButton';
 
 import { fetchCoffeeData } from '../api';
 import { addItem } from '../redux/cartSlice';
+import { useTheme } from '../context/ThemeContext';
 import { COLORS } from '../constants/colors';
 import { SPACING, BREAKPOINT_TABLET, FONT_SIZE } from '../constants/layout';
 import { SCREENS } from '../navigation/screens';
@@ -30,6 +31,7 @@ export default function MenuScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
+  const { theme } = useTheme();
 
   const { width } = useWindowDimensions();
   const numColumns = width >= BREAKPOINT_TABLET ? 3 : 2;
@@ -82,7 +84,7 @@ export default function MenuScreen({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.background }]}>
       <Header
         title="Menu"
         subtitle="Browse the full catalog"
@@ -102,11 +104,11 @@ export default function MenuScreen({ navigation }) {
       {loading ? (
         <View style={styles.centerContainer}>
           <ActivityIndicator size="large" color={COLORS.brownDark} />
-          <Text style={styles.loadingText}>Loading menu...</Text>
+          <Text style={[styles.loadingText, { color: theme.text }]}>Loading menu...</Text>
         </View>
       ) : error ? (
         <View style={styles.centerContainer}>
-          <Text style={styles.errorText}>{error}</Text>
+          <Text style={[styles.errorText, { color: theme.text }]}>{error}</Text>
           <CustomButton
             title="Retry"
             onPress={() => {
@@ -153,7 +155,7 @@ export default function MenuScreen({ navigation }) {
           )}
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
-              <Text style={styles.emptyTitle}>No items in this category</Text>
+              <Text style={[styles.emptyTitle, { color: theme.text }]}>No items in this category</Text>
               <CustomButton
                 title="Show all items"
                 variant="outline"
@@ -171,7 +173,6 @@ export default function MenuScreen({ navigation }) {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: COLORS.background,
   },
   sectionNoPadding: {
     marginBottom: SPACING.md,

@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Platform } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import { useTheme } from '../context/ThemeContext';
 import { COLORS } from '../constants/colors';
 import { RADIUS, SPACING, FONT_SIZE } from '../constants/layout';
 
@@ -14,12 +15,13 @@ export default function ProductCard({
   onAddPress,
   style,
 }) {
+  const { theme } = useTheme();
   const isHorizontal = variant === 'horizontal';
 
   if (isHorizontal) {
     return (
       <TouchableOpacity
-        style={[styles.cardHorizontal, style]}
+        style={[styles.cardHorizontal, { backgroundColor: theme.card }, style]}
         activeOpacity={0.8}
         onPress={onPress}
       >
@@ -28,7 +30,7 @@ export default function ProductCard({
         </View>
 
         <View style={styles.infoHorizontal}>
-          <Text style={styles.name} numberOfLines={1}>
+          <Text style={[styles.name, { color: theme.text }]} numberOfLines={1}>
             {name}
           </Text>
           {description ? (
@@ -36,7 +38,7 @@ export default function ProductCard({
               {description}
             </Text>
           ) : null}
-          <Text style={styles.price}>${price.toFixed(2)}</Text>
+          <Text style={[styles.price, { color: theme.primary }]}>${price.toFixed(2)}</Text>
         </View>
 
         <View style={styles.actionsHorizontal}>
@@ -60,7 +62,7 @@ export default function ProductCard({
 
   return (
     <TouchableOpacity
-      style={[styles.cardGrid, style]}
+      style={[styles.cardGrid, { backgroundColor: theme.card }, style]}
       activeOpacity={0.8}
       onPress={onPress}
     >
@@ -68,12 +70,12 @@ export default function ProductCard({
         <Text style={styles.coffeeGlyph}>☕</Text>
       </View>
 
-      <Text style={styles.name} numberOfLines={1}>
+      <Text style={[styles.name, { color: theme.text }]} numberOfLines={1}>
         {name}
       </Text>
 
       <View style={styles.row}>
-        <Text style={styles.price}>${price.toFixed(2)}</Text>
+        <Text style={[styles.price, { color: theme.primary }]}>${price.toFixed(2)}</Text>
         {rating > 0 && <Stars rating={rating} />}
       </View>
 

@@ -20,6 +20,7 @@ import CustomButton from '../components/CustomButton';
 
 import { PRODUCTS, YOUR_USUAL } from '../data/products';
 import { addItem } from '../redux/cartSlice';
+import { useTheme } from '../context/ThemeContext';
 import { COLORS } from '../constants/colors';
 import { SPACING, RADIUS, FONT_SIZE } from '../constants/layout';
 import { SCREENS } from '../navigation/screens';
@@ -30,6 +31,7 @@ export default function HomeScreen({ navigation, route }) {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [search, setSearch] = useState('');
   const dispatch = useDispatch();
+  const { theme } = useTheme();
 
   const orderConfirmed = route.params?.orderConfirmed;
   const orderTitle = route.params?.orderTitle;
@@ -95,17 +97,17 @@ export default function HomeScreen({ navigation, route }) {
 
       {!search && selectedCategory === 'All' && (
         <View style={styles.section}>
-          <View style={styles.usualCard}>
+          <View style={[styles.usualCard, { backgroundColor: theme.card }]}>
             <View style={styles.usualThumb}>
               <Text style={styles.usualCoffeeGlyph}>☕</Text>
             </View>
             <View style={styles.usualInfo}>
-              <Text style={styles.usualLabel}>Your usual</Text>
-              <Text style={styles.usualName}>{YOUR_USUAL.name}</Text>
+              <Text style={[styles.usualLabel, { color: theme.primary }]}>Your usual</Text>
+              <Text style={[styles.usualName, { color: theme.text }]}>{YOUR_USUAL.name}</Text>
               <Text style={styles.usualDate}>{YOUR_USUAL.description}</Text>
             </View>
             <TouchableOpacity
-              style={styles.reorderButton}
+              style={[styles.reorderButton, { backgroundColor: theme.primary }]}
               onPress={handleReorderUsual}
               activeOpacity={0.8}
               accessibilityLabel="Reorder your usual drink"
@@ -117,7 +119,7 @@ export default function HomeScreen({ navigation, route }) {
       )}
 
       <View style={styles.sectionTitleRow}>
-        <Text style={styles.sectionTitle}>Categories</Text>
+        <Text style={[styles.sectionTitle, { color: theme.text }]}>Categories</Text>
       </View>
       <View style={styles.sectionNoPadding}>
         <CategoryList
@@ -128,7 +130,7 @@ export default function HomeScreen({ navigation, route }) {
       </View>
 
       <View style={styles.sectionTitleRow}>
-        <Text style={styles.sectionTitle}>
+        <Text style={[styles.sectionTitle, { color: theme.text }]}>
           {search ? `Search results (${filteredProducts.length})` : 'Popular near you'}
         </Text>
       </View>
@@ -136,7 +138,7 @@ export default function HomeScreen({ navigation, route }) {
   );
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.background }]}>
       <Header
         title="Good morning, Alex"
         subtitle="Riverside Roasters · 0.3 mi"

@@ -26,7 +26,12 @@ export default function CartScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const handleRemove = (cartItemId) => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    LayoutAnimation.configureNext({
+      duration: 500,
+      create: { type: 'linear', property: 'opacity' },
+      update: { type: 'spring', springDamping: 0.6 },
+      delete: { type: 'linear', property: 'opacity' },
+    });
     dispatch(removeItem(cartItemId));
   };
 
@@ -103,7 +108,12 @@ export default function CartScreen({ navigation }) {
             <CustomButton
               title="Proceed to Checkout"
               onPress={() => {
-                LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                LayoutAnimation.configureNext({
+                  duration: 500,
+                  create: { type: 'linear', property: 'opacity' },
+                  update: { type: 'spring', springDamping: 0.6 },
+                  delete: { type: 'linear', property: 'opacity' },
+                });
                 dispatch(clearCart());
                 navigation.navigate(SCREENS.HOME, {
                   orderConfirmed: true,

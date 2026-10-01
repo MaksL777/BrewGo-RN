@@ -13,7 +13,9 @@ import { addItem } from '../redux/cartSlice';
 
 import CustomButton from '../components/CustomButton';
 import QuantityStepper from '../components/QuantityStepper';
+import ProductReviews from '../components/ProductReviews';
 import { getProductById } from '../data/products';
+import { useTheme } from '../context/ThemeContext';
 import { COLORS } from '../constants/colors';
 import { SPACING, RADIUS, FONT_SIZE } from '../constants/layout';
 import { SCREENS } from '../navigation/screens';
@@ -28,6 +30,7 @@ const MILKS = ['Whole', 'Oat', 'Almond', 'None'];
 const SUGAR_LEVELS = ['0%', '50%', '100%'];
 
 export default function ProductDetailsScreen({ route, navigation }) {
+  const { theme } = useTheme();
   const productId = route.params?.productId;
   const product = route.params?.product || (productId ? getProductById(productId) : undefined);
   const dispatch = useDispatch();
@@ -57,10 +60,10 @@ export default function ProductDetailsScreen({ route, navigation }) {
 
   if (!product) {
     return (
-      <SafeAreaView style={styles.safeArea}>
+      <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.background }]}>
         <View style={styles.notFound}>
           <Text style={styles.notFoundGlyph}>🔍</Text>
-          <Text style={styles.notFoundTitle}>Item not found</Text>
+          <Text style={[styles.notFoundTitle, { color: theme.text }]}>Item not found</Text>
           <Text style={styles.notFoundBody}>
             {productId
               ? `No product matches id "${productId}".`
@@ -108,7 +111,7 @@ export default function ProductDetailsScreen({ route, navigation }) {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.background }]}>
       <ScrollView
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
@@ -119,31 +122,39 @@ export default function ProductDetailsScreen({ route, navigation }) {
 
         <View style={styles.headerRow}>
           <View style={styles.headerInfo}>
-            <Text style={styles.name}>{product.name}</Text>
+            <Text style={[styles.name, { color: theme.text }]}>{product.name}</Text>
             {product.calories ? (
               <Text style={styles.calories}>{product.calories}</Text>
             ) : null}
           </View>
-          <Text style={styles.price}>${product.price.toFixed(2)}</Text>
+          <Text style={[styles.price, { color: theme.primary }]}>${product.price.toFixed(2)}</Text>
         </View>
 
         <Text style={styles.description}>{product.description}</Text>
 
         <View style={styles.divider} />
 
-        <Text style={styles.sectionLabel}>Size</Text>
+        <Text style={[styles.sectionLabel, { color: theme.text }]}>Size</Text>
         <View style={styles.chipRow}>
           {SIZES.map((s) => {
             const isSelected = size === s.key;
             return (
               <TouchableOpacity
                 key={s.key}
-                style={[styles.sizeChip, isSelected && styles.chipActive]}
+                style={[
+                  styles.sizeChip, 
+                  { backgroundColor: theme.card },
+                  isSelected && { backgroundColor: theme.primary, borderColor: theme.primary }
+                ]}
                 onPress={() => setSize(s.key)}
-                activeOpacity={0.8}
+                activeOpacity={0.6}
               >
                 <Text
-                  style={[styles.sizeLabel, isSelected && styles.chipLabelActive]}
+                  style={[
+                    styles.sizeLabel, 
+                    { color: theme.text },
+                    isSelected && styles.chipLabelActive
+                  ]}
                 >
                   {s.label}
                 </Text>
@@ -152,20 +163,25 @@ export default function ProductDetailsScreen({ route, navigation }) {
           })}
         </View>
 
-        <Text style={styles.sectionLabel}>Milk</Text>
+        <Text style={[styles.sectionLabel, { color: theme.text }]}>Milk</Text>
         <View style={styles.chipRow}>
           {MILKS.map((m) => {
             const isSelected = milk === m;
             return (
               <TouchableOpacity
                 key={m}
-                style={[styles.optionChip, isSelected && styles.chipActive]}
+                style={[
+                  styles.optionChip, 
+                  { backgroundColor: theme.card },
+                  isSelected && { backgroundColor: theme.primary, borderColor: theme.primary }
+                ]}
                 onPress={() => setMilk(m)}
-                activeOpacity={0.8}
+                activeOpacity={0.6}
               >
                 <Text
                   style={[
                     styles.optionLabel,
+                    { color: theme.text },
                     isSelected && styles.chipLabelActive,
                   ]}
                 >
@@ -178,7 +194,7 @@ export default function ProductDetailsScreen({ route, navigation }) {
 
         <View style={styles.stepperRow}>
           <View>
-            <Text style={styles.sectionLabelInline}>Extra shots</Text>
+            <Text style={[styles.sectionLabelInline, { color: theme.text }]}>Extra shots</Text>
             <Text style={styles.subtext}>+$0.75 per extra espresso shot</Text>
           </View>
           <QuantityStepper
@@ -189,20 +205,25 @@ export default function ProductDetailsScreen({ route, navigation }) {
           />
         </View>
 
-        <Text style={styles.sectionLabel}>Sugar level</Text>
+        <Text style={[styles.sectionLabel, { color: theme.text }]}>Sugar level</Text>
         <View style={styles.chipRow}>
           {SUGAR_LEVELS.map((s) => {
             const isSelected = sugar === s;
             return (
               <TouchableOpacity
                 key={s}
-                style={[styles.optionChip, isSelected && styles.chipActive]}
+                style={[
+                  styles.optionChip, 
+                  { backgroundColor: theme.card },
+                  isSelected && { backgroundColor: theme.primary, borderColor: theme.primary }
+                ]}
                 onPress={() => setSugar(s)}
-                activeOpacity={0.8}
+                activeOpacity={0.6}
               >
                 <Text
                   style={[
                     styles.optionLabel,
+                    { color: theme.text },
                     isSelected && styles.chipLabelActive,
                   ]}
                 >
@@ -212,9 +233,11 @@ export default function ProductDetailsScreen({ route, navigation }) {
             );
           })}
         </View>
+
+        <ProductReviews productId={product.id} />
       </ScrollView>
 
-      <View style={styles.footer}>
+      <View style={[styles.footer, { backgroundColor: theme.card }]}>
         <View style={styles.qtyContainer}>
           <Text style={styles.qtyLabel}>Qty</Text>
           <QuantityStepper value={qty} onChange={setQty} min={1} max={10} size="small" />

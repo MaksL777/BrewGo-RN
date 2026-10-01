@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet, Platform } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import { Feather } from '@expo/vector-icons';
 
 import MainTabNavigator from './MainTabNavigator';
@@ -8,27 +8,31 @@ import ProductDetailsScreen from '../screens/ProductDetailsScreen';
 import CheckoutScreen from '../screens/CheckoutScreen';
 import CartScreen from '../screens/CartScreen';
 import { SCREENS } from './screens';
+import { useTheme } from '../context/ThemeContext';
 import { COLORS } from '../constants/colors';
 import { RADIUS, SPACING, FONT_SIZE } from '../constants/layout';
 
 const Stack = createStackNavigator();
 
 export default function MainStackNavigator() {
+  const { theme } = useTheme();
+
   return (
     <Stack.Navigator
       screenOptions={({ navigation }) => ({
+        ...TransitionPresets.SlideFromRightIOS,
         headerStyle: {
-          backgroundColor: COLORS.background,
+          backgroundColor: theme.background,
           elevation: 0,
           shadowOpacity: 0,
           borderBottomWidth: 0,
         },
-        headerTintColor: COLORS.brownDark,
+        headerTintColor: theme.primary,
         headerTitleAlign: 'center',
         headerTitleStyle: {
           fontWeight: '700',
           fontSize: FONT_SIZE.lg,
-          color: COLORS.ink,
+          color: theme.text,
         },
         headerBackTitleVisible: false,
         headerLeftContainerStyle: {
@@ -40,12 +44,12 @@ export default function MainStackNavigator() {
         headerLeft: ({ canGoBack }) =>
           canGoBack ? (
             <TouchableOpacity
-              style={styles.backButtonCircle}
+              style={[styles.backButtonCircle, { backgroundColor: theme.card }]}
               onPress={() => navigation.goBack()}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               accessibilityLabel="Go back"
             >
-              <Feather name="chevron-left" size={22} color={COLORS.ink} />
+              <Feather name="chevron-left" size={22} color={theme.text} />
             </TouchableOpacity>
           ) : null,
       })}
@@ -62,11 +66,11 @@ export default function MainStackNavigator() {
           title: 'Product Details',
           headerRight: () => (
             <TouchableOpacity
-              style={styles.rightButtonCircle}
+              style={[styles.rightButtonCircle, { backgroundColor: theme.card }]}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               accessibilityLabel="Add to favorites"
             >
-              <Feather name="star" size={20} color={COLORS.caramel} />
+              <Feather name="star" size={20} color={theme.primary} />
             </TouchableOpacity>
           ),
         }}

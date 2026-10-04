@@ -6,7 +6,6 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  LayoutAnimation,
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { Feather } from '@expo/vector-icons';
@@ -20,18 +19,16 @@ import { COLORS } from '../constants/colors';
 import { SPACING, RADIUS, FONT_SIZE } from '../constants/layout';
 import { SCREENS } from '../navigation/screens';
 
+import Animated, { SlideOutRight, SlideInRight, Layout } from 'react-native-reanimated';
+
 export default function CartScreen({ navigation }) {
   const { theme } = useTheme();
   const cartItems = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
 
   const handleRemove = (cartItemId) => {
-    LayoutAnimation.configureNext({
-      duration: 600,
-      create: { type: 'spring', property: 'scaleXY', springDamping: 0.7 },
-      update: { type: 'spring', springDamping: 0.7 },
-      delete: { type: 'spring', property: 'scaleXY', springDamping: 0.7 },
-    });
+    // Reanimated will automatically trigger the `exiting` animation 
+    // when this item is removed from Redux and unmounts!
     dispatch(removeItem(cartItemId));
   };
 
@@ -46,7 +43,12 @@ export default function CartScreen({ navigation }) {
   const totalAmount = cartItems.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
 
   const renderItem = ({ item }) => (
-    <View style={[styles.cartItem, { backgroundColor: theme.card }]}>
+    <Animated.View 
+      layout={Layout.springify().damping(15)} 
+      entering={SlideInRight.duration(400)}
+      exiting={SlideOutRight.duration(400)} 
+      style={[styles.cartItem, { backgroundColor: theme.card }]}
+    >
       <View style={styles.itemInfo}>
         <Text style={[styles.itemName, { color: theme.text }]}>{item.productName}</Text>
         <Text style={styles.itemCustomization}>{item.customization}</Text>
@@ -70,7 +72,7 @@ export default function CartScreen({ navigation }) {
           <Feather name="trash-2" size={18} color="#B3261E" />
         </TouchableOpacity>
       </View>
-    </View>
+    </Animated.View>
   );
 
   return (
@@ -108,12 +110,6 @@ export default function CartScreen({ navigation }) {
             <CustomButton
               title="Proceed to Checkout"
               onPress={() => {
-                LayoutAnimation.configureNext({
-                  duration: 600,
-                  create: { type: 'spring', property: 'scaleXY', springDamping: 0.7 },
-                  update: { type: 'spring', springDamping: 0.7 },
-                  delete: { type: 'spring', property: 'scaleXY', springDamping: 0.7 },
-                });
                 dispatch(clearCart());
                 navigation.navigate(SCREENS.HOME, {
                   orderConfirmed: true,

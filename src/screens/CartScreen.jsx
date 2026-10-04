@@ -27,10 +27,10 @@ export default function CartScreen({ navigation }) {
 
   const handleRemove = (cartItemId) => {
     LayoutAnimation.configureNext({
-      duration: 500,
-      create: { type: 'linear', property: 'opacity' },
-      update: { type: 'spring', springDamping: 0.6 },
-      delete: { type: 'linear', property: 'opacity' },
+      duration: 600,
+      create: { type: 'spring', property: 'scaleXY', springDamping: 0.7 },
+      update: { type: 'spring', springDamping: 0.7 },
+      delete: { type: 'spring', property: 'scaleXY', springDamping: 0.7 },
     });
     dispatch(removeItem(cartItemId));
   };
@@ -109,10 +109,10 @@ export default function CartScreen({ navigation }) {
               title="Proceed to Checkout"
               onPress={() => {
                 LayoutAnimation.configureNext({
-                  duration: 500,
-                  create: { type: 'linear', property: 'opacity' },
-                  update: { type: 'spring', springDamping: 0.6 },
-                  delete: { type: 'linear', property: 'opacity' },
+                  duration: 600,
+                  create: { type: 'spring', property: 'scaleXY', springDamping: 0.7 },
+                  update: { type: 'spring', springDamping: 0.7 },
+                  delete: { type: 'spring', property: 'scaleXY', springDamping: 0.7 },
                 });
                 dispatch(clearCart());
                 navigation.navigate(SCREENS.HOME, {
